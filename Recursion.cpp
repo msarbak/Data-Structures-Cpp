@@ -12,7 +12,15 @@ void diziTersCevir(int dizi[], int uzunluk) {
 }
 
 bool ikiliArama(int sayilar[], int baslangic, int bitis, int aranan){
-    
+     int ortaindis = (baslangic + bitis) / 2;
+     if(bitis < baslangic) return false; //hatalı durum, durdum
+     if(sayilar[ortaindis] == aranan) return true;  //aranan tam ortada durdum
+     if(aranan < sayilar[ortaindis]) {
+        return ikiliArama(sayilar, baslangic, ortaindis - 1, aranan);
+        } //solda arama
+     else {
+        return ikiliArama(sayilar, ortaindis + 1, bitis, aranan);
+        }  //sagda arama
 }
 
 int main() {
@@ -25,6 +33,16 @@ int main() {
 
 
     int dizi[] = {17,27,46,63,90,112,125,140,157};
-
+    int sayi;
+    cout<<"Aranan Sayiyi giriniz: "<<endl;
+    cin>>sayi;
+    if(ikiliArama(dizi,0,8,sayi)) {
+        cout<<"Aranan sayi dizide VARDIR"<<endl;
+        }
+    else {
+        cout<<"Aranan sayi dizide YOKTUR"<<endl;
+    }
+    cout<<" -------------------"<<endl;
+    
     return 0;
 }
