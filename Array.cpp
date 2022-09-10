@@ -43,6 +43,7 @@ int main() {
     cout<<*p<<endl; // pointerın kendi degerini 1 arttırdıgım icin, 2. hücrenin degerini yazdırdı.
     cout<<"uzunluk: "<<sizeof(sayilar)/sizeof(int)<<endl; // 12/4 = 3
     //cout<<"uzunluk: "<<Uzunluk(sayilar)<<endl; // hatalı kullanım
+    cout<<" -------------------"<<endl;
 
 
     int length;
@@ -50,6 +51,7 @@ int main() {
     cin>>length;
     int *k = diziOlusturSifirla(length);
     cout<<k[3]<<endl; //3. elemanı yazdıracak hepsi sıfır oldugu icin 0 gelir ekrana  
+    cout<<" -------------------"<<endl;
 
 
     int l[] = {10,20,30};
@@ -58,13 +60,14 @@ int main() {
     r[0] = 100;
     cout<<p[0]<<endl; // p nin degerinin degismedigini goruruz r degisti sadece cunku iki bagımsız dizi 
     delete [] r; // p yi silmeme gerek yok o heapte degil
+    cout<<" -------------------"<<endl;
 
 
     int m[] = {10,20,30};
     int n[] = {10,20,30};
     if(diziKarsilastir(m,3,n,3)) cout<<"diziler esit"<<endl;
     else cout<<"diizler esit degil"<<endl;
-
+    cout<<" -------------------"<<endl;
 
     return 0;
 }
