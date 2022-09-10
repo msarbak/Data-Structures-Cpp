@@ -23,13 +23,24 @@ bool ikiliArama(int sayilar[], int baslangic, int bitis, int aranan){
         }  //sagda arama
 }
 
+void Hanoi(int diskSayisi, char kaynak, char ara, char hedef){
+    if(diskSayisi == 1) {
+        cout<<"Diski "<<kaynak<<"'dan "<<hedef<<"'ye tasi"<<endl;
+    }
+    else{
+        Hanoi(diskSayisi - 1, kaynak, hedef, ara);
+        Hanoi(1, kaynak, ara, hedef);
+        Hanoi(diskSayisi - 1, ara, kaynak, hedef);
+    } 
+}
+
 int main() {
     int sayilar[] = {27,46,17,90,63};
     diziTersCevir(sayilar, 5);
     for (int index = 0; index < 5; index++){
         cout<<sayilar[index]<<" ";
     }
-    cout<<" -------------------"<<endl;
+    cout<<endl<<" -------------------"<<endl;
 
 
     int dizi[] = {17,27,46,63,90,112,125,140,157};
@@ -43,6 +54,12 @@ int main() {
         cout<<"Aranan sayi dizide YOKTUR"<<endl;
     }
     cout<<" -------------------"<<endl;
-    
+
+
+    int diskSayisi;
+    cout<<"Disk Sayisi: "<<endl;
+    cin>>diskSayisi;
+    Hanoi(diskSayisi,'A','B','C');
+
     return 0;
 }
