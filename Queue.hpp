@@ -14,12 +14,20 @@ class Queue{
         int capacity;
         int length;
         Object *items; //dizinin ilk elemnaını gosteren pointer
-
+        //length kapasiteye esit olmadıgı sürece yer var demektir 
+        //referans noktam uzunluk, uuznluk sıfırsa kuyrukta eleman yoktur
         void reserve(int newCapacity) {
             Object *tmp = new Object[newCapacity];
-            for (int i = 0; i < length; i++){
-                tmp[i] = items[i];
-            }   
+            for (int j = 0, i = front; j < length; j++){ //kuyruk sıfırdan baslamıyor olabilir, tmp i biz belirledigimiz ici o sıralı fakat i yani items garanti olması acısından front tan baslatmamız gerekiyor
+            //j yi birer artıyoruoruz i yi dizinin dısında tasmaması adına modunu alarak arttıracagız
+                tmp[j] = items[i];
+                i = (i + 1) % capacity;  // dizi arasındaki boslukları alıyorum aslında burada
+            } 
+            capacity = newCapacity; //kapasite degisti
+            delete [] items; //eski diziyi iade ediyorum
+            items = tmp; // artık items yeni diziyi gosterecek
+            front = 0; // artık frontun 0. adres olduguna eminim (tmp de duzenledik yukarıdaki for dongusunde)
+            back = length - 1; //front gibi duzenlengigi icin dogal olarak en sondaki adresde
         }
     public:
         Queue() { //kurucu method
@@ -37,11 +45,29 @@ class Queue{
         int count()const{ //get methodu, sabis bir func.
             return length;
         }
-        bool isempty()const{
+        bool isEmpty()const{
             return length == 0;
+        }
+        //yıgıttaki top func. gibi , cıkmak ğzere olan veriyi gosterecek func.:
+        const Object& peek(){ //sadece okuma amaclı bir func.
+            if(isEmpty()) throw "queue is empty!";
+            return items[front]; // front indexi neredeyse veri oradadır
         }
         void enqueue(const Object& item) {
             if(length == capacity) reserve(2*capacity);
+            back = (back + 1) % capacity; //bir hata olmaması adına yine mod alarak gidiyorum
+            //elemanı ekleemden once kuyrugun sonunu ilerletecegim daha sonrasında eklenecek
+            items[back] = item; // back'in icinde oldugu index'e yeni veriyi ekliyorum
+            length++; // sonrasında eleman sayısı arttı
+        }
+        void dequeue(const Object& item){
+            //eklemenin tersi bu sefer back degil front ilerleyecek
+            if(isEmpty()) throw "queue is empty!";
+            front = (front + 1) % capacity;
+            length--;
+        }
+        ~Queue(){
+            delete [] items;
         }
 };
 
