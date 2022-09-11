@@ -23,6 +23,21 @@ class Queue{
         Node<Object> *front; // veri silinirse harekt edecek 
         Node<Object> *back; // veri eklenirse harekt edecek 
         int length; // uzunluk da lazım
+        Node<Object> *previousMaxNode(){
+            //kuyrugu kullanan belirleyecek
+            Node<Object> *prev = NULL;
+            Node<Object> *tmp = front;
+            Object max = front->item; //ilk dugumun verisini baslangic icin max kabul ediyorum
+            while(tmp->next != NULL) { //oncesine yerlestirdigimiz icin sorasını kontro lediyoruz
+                if(tmp->next->item > max) {
+                    max = tmp->next->item; //sonraki deger max dan büyüksee yeni max o olur ve bu duurmda prev artık tmp'tir
+                    prev = tmp;
+                }
+                tmp = tmp->next;
+            }
+            return prev;
+        }
+
         //dizi üzerinde degil düğüm üzerinde gostercegiz, bunalr artık tam sayı degil adres olacak o yüzden iptal ettik
         /* int front;
         int back;
@@ -82,6 +97,12 @@ class Queue{
             if(isEmpty()) throw "queue is empty!";
             return items[front]; // front indexi neredeyse veri oradadır
         }*/
+        const Object& peekMax(){ //sadece okuma amaclı bir func.
+            if(isEmpty()) throw "queue is empty!";
+            Node<Object> *prev = previousMaxNode; //bir öncesine yerlesiyor
+            if(prev == NULL) return peek();
+            return prev->next->item;
+        }
         void enqueue(const Object& item) {
             Node<Object> *last = new Node<Object>(item);
             if(isEmpty()) front = back = last;
@@ -101,7 +122,7 @@ class Queue{
         void dequeue(const Object& item){
             if(isEmpty()) throw "queue is empty!";
             Node<Object> *tmp = front;//cop kalmasın diye gecici bir gostericiye atmam lzaım
-            front = fornt->next; // boylece bastaki silindi
+            front = front->next; // boylece bastaki silindi
             delete tmp;
             length--;
         }
@@ -111,6 +132,19 @@ class Queue{
             front = (front + 1) % capacity;
             length--;
         }*/
+        void dequeueMax(const Object& item){ //oncelikli durumlar icin
+            if(isEmpty()) throw "queue is empty!";
+            Node<Object> *prev = previousMaxNode;
+            Node<Object> *tmp;
+            if(prev == NULL) dequeue();
+            else{
+                if(prev->next == back) back = prev; //previn nexti en son dugumse back artık prev 
+                tmp = prev->next;
+                prev->next = prev->next->next; //prev->nextini ilerletiyoruz
+                delete tmp;
+                length--;
+            }
+        }
         ~Queue(){
             clear();
         }
