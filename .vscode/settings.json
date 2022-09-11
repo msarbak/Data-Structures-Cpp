@@ -3,6 +3,7 @@
         "iostream": "cpp",
         "new": "cpp",
         "ostream": "cpp",
-        "ctime": "cpp"
+        "ctime": "cpp",
+        "cmath": "cpp"
     }
 }
