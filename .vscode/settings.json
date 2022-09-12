@@ -4,6 +4,7 @@
         "new": "cpp",
         "ostream": "cpp",
         "ctime": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "*.tcc": "cpp"
     }
 }
