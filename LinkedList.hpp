@@ -54,6 +54,7 @@ class LinkedList{
             insert(size,item); //konum size yani sona ekleyecek, neyi ekleyecek item ı
         }
         void insert(int index, const Object& item){
+            if(index < 0 || index > size) throw "Index oıut of range!";
             if(index == 0) head = new Node<Object>(item,head); //head artık yeni eklenen yeri gosteriyor, basa ekleme durumu icin
             //araya ve sona ekleme isi birlestirilebilir:
             else{
