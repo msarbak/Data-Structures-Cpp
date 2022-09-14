@@ -13,8 +13,8 @@ class BST{
         Object *items;
         int condition[SIZE]; //durum dizisi
 
-        int indexOf(const Object& item){
-            int currentIndex = 0; //ben ekledim derlemiyordu
+        int indexOf(const Object& item, int currentIndex = 0){
+            //ben ekledim derlemiyordu
              while(true) {
                 if(currentIndex >= SIZE || condition[currentIndex] == 0) return -1;
                 else if(item < items[currentIndex]) currentIndex = 2 * currentIndex + 1;
@@ -80,17 +80,25 @@ class BST{
                     //once cocuklar sonra dugumun kendisi
                }
         }
-        void levelorder(int currentIndex = 0){ //parametreyi yine ben ekledim derlenmiylordu
+        void levelorder(){ //parametreyi yine ben ekledim derlenmiylordu
               for (int i = 0; i < SIZE; i++){ //seviye bazlı oldugu icin direkt 0 dan baslayıp donebiliriz
                 if(condition[i] == 1) { //dugum var demektir
-                    cout<<items[currentIndex]<<" "; //ekrana dugumu yazıyorum
+                    cout<<items[i]<<" "; //ekrana dugumu yazıyorum
                 }
               }
               
         }
+        int Height(int index = 0){
+            //agacın yukseklgi = kokun yuksekligi
+            //kokun yuksekligi: en uzak kenar sayısı
+            //en alt kısım -1;
+            if(condition[index] == 0) return -1;
+            return 1 + max(Height(2 * index + 1),Height(2 * index + 2)); //hangi cocuk daha buyukse onu al 1 ekle
+        }
         ~BST(){
             delete [] items;
         }
-        
+        //agacın derinligi anlamsızdır ama agacın yuksekligi sorulabilir
+        //biz kodlarken derinligi baz alıyoruzzz!!!
 };
 #endif
