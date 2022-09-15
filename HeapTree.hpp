@@ -10,3 +10,5 @@ struct Node{
 };
 
 #endif
+
+//8.dakika
