@@ -38,7 +38,7 @@ class AVL{
                     }
                 }
             }
-            else(item > subNode->data) {
+            else{ //(item > subNode->data) 
                 subNode->right = SearchAndAdd(subNode->right, item);
                 
                 if(Height(subNode->right) == Height(subNode->left) + 2){
@@ -50,14 +50,29 @@ class AVL{
                     }
                 }
             }
-            hsubNode->height = Height(subNode);
+            subNode->height = Height(subNode);
             return subNode;
         }
         Node<Object> *SwapWithLeftChild(Node<Object> *subNode){
-            
+            Node<Object> *tmp = subNode->left;
+            subNode->left = tmp->right;
+            tmp->right = subNode;
+            //sol cocuk usturne yapılan cevrim islemi
+
+            subNode->height = Height(subNode);
+            tmp->height = 1 + max(Height(tmp->left),subNode->height);
+
+            return tmp;
         }
         Node<Object> *SwapWithrightChild(Node<Object> *subNode){
-            
+            Node<Object> *tmp = subNode->right;
+            subNode->right = tmp->left;
+            tmp->left = subNode;
+
+            subNode->height = Height(subNode);
+            tmp->height = 1 + max(Height(tmp->right),subNode->height);
+
+            return tmp;
         }
         bool DeleteNode(Node<Object> *&subNode){//silme kodu aslında yok sadece cop olusmaması ıcın burada
             Node<Object> *delNode = subNode;
@@ -101,7 +116,7 @@ class AVL{
             if(subNode == NULL) return -1;
             return 1 + max(Height(subNode->left),Height(subNode->right));
         }
-        void PrintLevel(Node<Obejct> *subNode,int level) {
+        void PrintLevel(Node<Object> *subNode,int level) {
             if(subNode == NULL) return;
             if(level == 0) cout<<subNode->data<<" ";
             else{
@@ -123,7 +138,7 @@ class AVL{
             return root == NULL;
         }
         void Add(const Object& item){
-            root = SearchAndAdd(root,item) //kokten basla parametreyi ekle
+            root = SearchAndAdd(root,item); //kokten basla parametreyi ekle
         }
         void inorder(){
             inorder(root);
