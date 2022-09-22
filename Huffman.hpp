@@ -2,18 +2,42 @@
 #define HUFFMANN_HPP
 
 #include <iostream>
+#include <fstream>
+#include <cstring>
 using namespace std;
 
-template <typename Object>
-struct Node{
-    Object item; // veri kısmı
-    Node<Object> *next;//adres kısmı
+class Dugum{
+    public:
+        char karakter;
+        int frekans;
+        string kod;
+        Dugum *sol;
+        Dugum *sag;  
 
-    Node(const Object& item, Node<Object> *next = NULL){//kurucu func.
-    //dısaridan veri aldım ve adres oalcak
-    this->item = item; //itemı aldık once
-    this->next = next;
-    }
+        Dugum(char kr, int frek, Dugum *sl = NULL, Dugum *sg = NULL);
+        bool yaprakMi() const;
+        bool operator == (Dugum&);
+        bool operator != (Dugum&);
+        bool operator > (Dugum&);
+};
+
+class Huffman{
+    private:
+        int harfler;
+        string girdi;
+        Dugum *kok;
+        Dugum* AgacOlustur(int frek[]);
+        void KodOlustur(Dugum*, string);
+        int minDugumIndex(Dugum* dugumler[]);
+        void dosyaOku(string);
+        void inorder(Dugum*);
+        void silDugum(Dugum*&);
+
+    public:
+        Huffman(string);
+        void Kodla();
+        friend ostream& operator<<(ostream&, Huffman&);
+        ~Huffman();
 };
 
 #endif
