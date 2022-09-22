@@ -23,13 +23,51 @@ bool Dugum::operator > (Dugum& sg){
 
 
 Dugum* Huffman::AgacOlustur(int frek[]){
+    Dugum* dugumler[harfler];
+    for (int i = 0; i < harfler; i++){
+        if(frek[i] > 0) {
+            dugumler[i] = new Dugum((char)i,frek[i]);
+        } else {
+            dugumler[i] = NULL;
+        }
+    }
+    while(true) {
+        int ilkIndex = minDugumIndex(dugumler);
+        Dugum *min1 = dugumler[ilkIndex];
+        dugumler[ilkIndex] = NULL;
 
+        int ikinciIndex = minDugumIndex(dugumler);
+        if(ikinciIndex == -1) {
+            return min1;
+        }
+
+        Dugum *min2 = dugumler[ikinciIndex];
+        dugumler[ikinciIndex] = NULL;
+        dugumler[ilkIndex] = new Dugum(0, min1->frekans + min2->frekans, min1, min2);
+    }
 }
-void Huffman::KodOlustur(Dugum*, string){
-
+void Huffman::KodOlustur(Dugum* altdugum, string kod){
+    if(altdugum == NULL) return;
+    if(!altdugum->yaprakMi()) {
+        KodOlustur(altdugum->sol, kod + "0");
+        KodOlustur(altdugum->sag, kod + "1");
+    } else{
+        altdugum->kod = kod;
+    }
 }
 int Huffman::minDugumIndex(Dugum* dugumler[]){
+    Dugum *min;
+    int minindeks = -1;
 
+    for (int i = 0; i < harfler; i++){
+        if(dugumler[i] != NULL) continue;
+        if(*min > *(dugumler[i])) {
+            min = dugumler[i];
+            minindeks = i;
+        }
+    }
+    return minindeks;
+    
 }
 void Huffman::dosyaOku(string dosyaYolu){
     string satir;
@@ -47,8 +85,12 @@ void Huffman::dosyaOku(string dosyaYolu){
 void Huffman::inorder(Dugum*){
 
 }
-void Huffman::silDugum(Dugum*&){
-
+void Huffman::silDugum(Dugum*& altDugum){
+    if(altDugum == NULL) return;
+    silDugum(altDugum->sol);
+    silDugum(altDugum->sag);
+    delete altDugum;
+    altDugum = NULL; 
 }
 Huffman::Huffman(string dosyaYolu){
     harfler = 256;
@@ -66,10 +108,15 @@ void Huffman::Kodla(){
     for (int i = 0; i < girdi.size() - 1; i++){
         frek[karakterler[i]]++;
     }
-    
+    kok = AgacOlustur(frek);
+    KodOlustur(kok,"");
     
 }
-ostream& operator<<(ostream&, Huffman&);
+ostream& operator<<(ostream& ekran, Huffman& sag){
+    ekran<<"Huffman agacindaki karakterler ve kodlari: "<<endl;
+    sag.inorder(sag.kok);
+    return ekran;
+}
 Huffman::~Huffman(){
 
 }
